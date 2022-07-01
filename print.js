@@ -1,12 +1,14 @@
 function batchCreateDashboard() {
-  var Count = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(2, 19).getValues();
+  var demographics_sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics');
+
+  var Count = demographics_sheet.getRange(2, 19).getValues();
 
   // Get all of the rows cached into arrays
-  var SIDs = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 1, Count).getValues();
-  var schools = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 6, Count).getValues();
-  var hrTeachs = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 19, Count).getValues();
-  var first_names = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 4, Count).getValues();
-  var last_names = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 3, Count).getValues();
+  var SIDs = demographics_sheet.getRange(0, 1, Count).getValues();
+  var schools = demographics_sheet.getRange(0, 6, Count).getValues();
+  var hrTeachs = demographics_sheet.getRange(0, 19, Count).getValues();
+  var first_names = demographics_sheet.getRange(0, 4, Count).getValues();
+  var last_names = demographics_sheet.getRange(0, 3, Count).getValues();
 
 
   for(var i = 2; i<= Count; i+=1){
