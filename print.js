@@ -10,6 +10,7 @@ function batchCreateDashboard() {
   var first_names = demographics_sheet.getRange(0, 4, Count).getValues();
   var last_names = demographics_sheet.getRange(0, 3, Count).getValues();
 
+  Utilities.sleep(10000); // wait 10s for those first api calls
 
   for(var i = 2; i<= Count; i+=1){
     SpreadsheetApp.getActiveSpreadsheet().getSheetByName('printData').getRange(3, 11).setValue(SIDs[i][0]);
