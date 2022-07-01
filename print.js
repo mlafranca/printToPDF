@@ -1,14 +1,21 @@
 function batchCreateDashboard() {
-  var Count = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(2, 19).getValue();
+  var Count = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(2, 19).getValues();
+
+  // Get all of the rows cached into arrays
+  var SIDs = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 1, Count).getValues();
+  var schools = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 6, Count).getValues();
+  var hrTeachs = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 19, Count).getValues();
+  var first_names = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 4, Count).getValues();
+  var last_names = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(0, 3, Count).getValues();
+
+
   for(var i = 2; i<= Count; i+=1){
-    var SID = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(i, 1).getValue();
-    SpreadsheetApp.getActiveSpreadsheet().getSheetByName('printData').getRange(3, 11).setValue(SID);
-    var school = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(i, 6).getValue();
-    var hrTeach = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(i, 19).getValue();
-    var studentName = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(i, 4).getValue() + " " + SpreadsheetApp.getActiveSpreadsheet().getSheetByName('demographics').getRange(i, 3).getValue();
-    var fileName = school + " - " + hrTeach + " - " + SID + " - " + studentName + " - " + "Grade 2 - Spring 22 Data Dashboard.pdf";
-    var fileNameGenesis = SID + ".pdf"
-    switch(school){
+    SpreadsheetApp.getActiveSpreadsheet().getSheetByName('printData').getRange(3, 11).setValue(SIDs[i][0]);
+    var studentName = first_names[i][0] + " " + last_names[i][0];
+    var fileName = schools[i][0] + " - " + hrTeachs[i][0] + " - " + SIDs[i][0] + " - " + studentName + " - " + "Grade 2 - Spring 22 Data Dashboard.pdf";
+    var fileNameGenesis = SIDs[i][0] + ".pdf"
+
+    switch(schools[i][0]){
       case "BWD":
       var driveFolder = "1KOHZoejZZBqR4YfWP4X1VzHPqw-nimwU";
       break;
@@ -32,7 +39,7 @@ function batchCreateDashboard() {
     
     // Get the currently active spreadsheet URL (link)
     // Or use SpreadsheetApp.openByUrl("<>");
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    // const ss = SpreadsheetApp.getActiveSpreadsheet(); unused
 
     // URL of Form Letter
     const url = 'https://docs.google.com/spreadsheets/d/10oFhuM4QVHaKLtjCmwT1KAx899P_6VCAKmd_cwvw8wA/export?'+
@@ -52,7 +59,7 @@ function batchCreateDashboard() {
         '&top_margin=0&left_margin=0&right_margin=0&bottom_margin=0';  //set margins to 0
 
     var token = ScriptApp.getOAuthToken();
-    var sheets = ss.getSheets();
+    // var sheets = ss.getSheets(); unused
 
     var params = {method:"GET",headers:{"authorization":"Bearer "+ ScriptApp.getOAuthToken()}};
     var response = UrlFetchApp.fetch(url,params).getBlob().setName(fileName);
@@ -64,7 +71,8 @@ function batchCreateDashboard() {
     // Saves the file to the /Data Dasboards/Winter 22/Kindergarten/Genesis
     var genesisDriveFolder = DriveApp.getFolderById("1417xEJZK-U_bk2_5VNyYqIASIGKFtk2V");
     var copy=ff.makeCopy(fileNameGenesis,genesisDriveFolder);
-    Utilities.sleep(5500);
+
+    Utilities.sleep(1000);
   }
 }
 
